@@ -1,6 +1,3 @@
-# pibooth-qrcode
-
-
 ====================
 pibooth-qrcode
 ====================
@@ -48,10 +45,10 @@ configuration):
    :target: https://www.python.org/downloads
    :alt: Python 2.7+/3.6+
 
-.. |PypiPackage| image:: https://badge.fury.io/py/pibooth-google-photo.svg
-   :target: https://pypi.org/project/pibooth-google-photo
+.. |PypiPackage| image:: https://badge.fury.io/py/pibooth-qrcode.svg
+   :target: https://pypi.org/project/pibooth-qrcode
    :alt: PyPi package
 
-.. |Downloads| image:: https://img.shields.io/pypi/dm/pibooth-google-photo?color=purple
-   :target: https://pypi.org/project/pibooth-google-photo
+.. |Downloads| image:: https://img.shields.io/pypi/dm/pibooth-qrcode?color=purple
+   :target: https://pypi.org/project/pibooth-qrcode
    :alt: PyPi downloads

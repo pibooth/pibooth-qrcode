@@ -9,7 +9,7 @@ from setuptools import setup
 
 HERE = osp.abspath(osp.dirname(__file__))
 sys.path.insert(0, HERE)
-import pibooth_google_photo as plugin
+import pibooth_qrcode as plugin
 
 
 def main():
