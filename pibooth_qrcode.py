@@ -1,9 +1,25 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 import qrcode
 import pygame
 
 import pibooth
 
+__version__ = "0.0.1"
+
+@pibooth.hookimpl
+def pibooth_configure(cfg):
+    """Declare the new configuration options"""
+    cfg.add_option('QRCODE', 'qrcode_prefix', "https://github.com/pibooth/pibooth",
+                   "Prefix for the qrcode")
+
+@pibooth.hookimpl
+def pibooth_startup(cfg, app):
+    """Store the qrcode prefix as an attribute of the app
+    """
+    app.qrcode_prefix = cfg.get('QRCODE', 'qrcode_prefix')
 
 @pibooth.hookimpl
 def state_wait_enter(app, win):
@@ -28,7 +44,7 @@ def state_processing_exit(app):
 
     name = os.path.basename(app.previous_picture_file)
 
-    qr.add_data(os.path.join("www.pibooth.org/pictures", name))
+    qr.add_data(os.path.join(app.qrcode_prefix, name))
     qr.make(fit=True)
 
     image = qr.make_image(fill_color="black", back_color="white").convert('RGB')
