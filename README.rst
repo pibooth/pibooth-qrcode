@@ -32,6 +32,15 @@ Here below the new configuration options available in the `pibooth`_ configurati
 
 .. note:: Edit the configuration by running the command ``pibooth --config``.
 
+Example
+-------
+
+Here is an example of the rendering you can get with this plugin on the wait screen
+
+.. image:: https://raw.githubusercontent.com/pibooth/pibooth-qrcode/master/templates/screenshot.png
+   :align: center
+   :alt: Example screenshot
+
 .. --- Links ------------------------------------------------------------------
 
 .. _`pibooth`: https://pypi.org/project/pibooth
