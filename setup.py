@@ -54,7 +54,7 @@ def main():
                 {'universal': True}
         },
         zip_safe=True,  # Don't install the lib as an .egg zipfile
-        entry_points={'pibooth': ["pibooth-qrcode = pibooth-qrcode"]},
+        entry_points={'pibooth': ["pibooth_qrcode = pibooth_qrcode"]},
     )
 
 if __name__ == '__main__':
