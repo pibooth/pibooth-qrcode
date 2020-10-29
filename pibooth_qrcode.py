@@ -15,11 +15,12 @@ def pibooth_configure(cfg):
     cfg.add_option('QRCODE', 'qrcode_prefix', "https://github.com/pibooth/pibooth",
                    "Prefix URL for the QR code")
     cfg.add_option('QRCODE', 'unique_url', True,
-                   "Use only one URL for all photos (one QR code to the album)",
+                   "Use only one URL for all photos (one QR code linking to the album)",
                    "Use only one URL", ["True","False"])
-    cfg.add_option('QRCODE', 'code_color', (255, 255, 255),
-                   "The qr code color to fill", "QR code color", (255, 255, 255))
-    cfg.add_option('QRCODE', 'code_background', (0, 0, 0), "QR code background", "QR background color", (0 ,0 ,0))
+    cfg.add_option('QRCODE', 'code_foreground', (255, 255, 255),
+                   "QR code foreground color", "QR code color", (255, 255, 255))
+    cfg.add_option('QRCODE', 'code_background', (0, 0, 0),
+                   "QR code background color", "QR background color", (0 ,0 ,0))
 
 @pibooth.hookimpl
 def pibooth_startup(cfg, app):
@@ -48,12 +49,15 @@ def state_processing_exit(app, cfg):
                        box_size=3,
                        border=1)
 
-    name = os.path.basename(app.previous_picture_file)
+    if cfg.getboolean("QRCODE", 'unique_url'):
+        name = ''
+    else:
+        name = os.path.basename(app.previous_picture_file)
 
     qr.add_data(os.path.join(app.qrcode_prefix, name))
     qr.make(fit=True)
 
-    qrcode_fill_color = '#%02x%02x%02x' %cfg.gettyped("QRCODE", 'code_color')
+    qrcode_fill_color = '#%02x%02x%02x' %cfg.gettyped("QRCODE", 'code_foreground')
     qrcode_background_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'code_background')
 
     image = qr.make_image(fill_color=qrcode_fill_color, back_color=qrcode_background_color)
