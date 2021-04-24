@@ -6,10 +6,10 @@ from io import open
 import os.path as osp
 from setuptools import setup
 
-import pibooth_qrcode as plugin
 
 HERE = osp.abspath(osp.dirname(__file__))
 sys.path.insert(0, HERE)
+import pibooth_qrcode as plugin
 
 
 def main():
@@ -43,19 +43,19 @@ def main():
             'photobooth',
             'pygame'
         ],
-        py_modules=['pibooth-qrcode'],
+        py_modules=['pibooth_qrcode'],
         install_requires=[
             'pibooth>=2.0.0',
             'qrcode>=6.1'
         ],
-        include_package_data=True,
         options={
             'bdist_wheel':
                 {'universal': True}
         },
-        zip_safe=True,  # Don't install the lib as an .egg zipfile
+        zip_safe=False,  # Don't install the lib as an .egg zipfile
         entry_points={'pibooth': ["pibooth_qrcode = pibooth_qrcode"]},
     )
+
 
 if __name__ == '__main__':
     main()

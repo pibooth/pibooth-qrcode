@@ -1,13 +1,15 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""Pibooth plugin to display a QR Code on the screen during idle time."""
 
 import os
 import qrcode
 import pygame
-
 import pibooth
 
-__version__ = "0.0.2"
+
+__version__ = "0.0.3"
+
 
 @pibooth.hookimpl
 def pibooth_configure(cfg):
@@ -16,17 +18,19 @@ def pibooth_configure(cfg):
                    "Prefix URL for the QR code")
     cfg.add_option('QRCODE', 'unique_url', True,
                    "Use only one URL for all photos (one QR code linking to the album)",
-                   "Use only one URL", ["True","False"])
+                   "Use only one URL", ["True", "False"])
     cfg.add_option('QRCODE', 'code_foreground', (255, 255, 255),
                    "QR code foreground color", "QR code color", (255, 255, 255))
     cfg.add_option('QRCODE', 'code_background', (0, 0, 0),
-                   "QR code background color", "QR background color", (0 ,0 ,0))
+                   "QR code background color", "QR background color", (0, 0, 0))
+
 
 @pibooth.hookimpl
 def pibooth_startup(cfg, app):
     """Store the qrcode prefix as an attribute of the app
     """
     app.qrcode_prefix = cfg.get('QRCODE', 'qrcode_prefix')
+
 
 @pibooth.hookimpl
 def state_wait_enter(app, win):
@@ -57,7 +61,7 @@ def state_processing_exit(app, cfg):
     qr.add_data(os.path.join(app.qrcode_prefix, name))
     qr.make(fit=True)
 
-    qrcode_fill_color = '#%02x%02x%02x' %cfg.gettyped("QRCODE", 'code_foreground')
+    qrcode_fill_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'code_foreground')
     qrcode_background_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'code_background')
 
     image = qr.make_image(fill_color=qrcode_fill_color, back_color=qrcode_background_color)
