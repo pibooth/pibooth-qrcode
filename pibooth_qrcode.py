@@ -18,7 +18,7 @@ def pibooth_configure(cfg):
                    "Prefix URL for the QR code")
     cfg.add_option('QRCODE', 'unique_url', True,
                    "Use only one URL for all photos (one QR code linking to the album)",
-                   "Use only one URL", ["True","False"])
+                   "Use only one URL", ["True", "False"])
     cfg.add_option('QRCODE', 'foreground', (255, 255, 255),
                    "QR code foreground color", "Color", (255, 255, 255))
     cfg.add_option('QRCODE', 'background', (0, 0, 0),
