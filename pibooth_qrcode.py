@@ -1,13 +1,15 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""Pibooth plugin to display a QR Code on the screen during idle time."""
 
 import os
 import qrcode
 import pygame
-
 import pibooth
 
-__version__ = "0.0.2"
+
+__version__ = "0.0.3"
+
 
 @pibooth.hookimpl
 def pibooth_configure(cfg):
@@ -27,6 +29,7 @@ def pibooth_startup(cfg, app):
     """Store the qrcode prefix as an attribute of the app
     """
     app.qrcode_prefix = cfg.get('QRCODE', 'prefix_url')
+
 
 @pibooth.hookimpl
 def state_wait_enter(app, win):
@@ -56,7 +59,6 @@ def state_processing_exit(app, cfg):
 
     qr.add_data(os.path.join(app.qrcode_prefix, name))
     qr.make(fit=True)
-
     qrcode_fill_color = '#%02x%02x%02x' %cfg.gettyped("QRCODE", 'foreground')
     qrcode_background_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'background')
 
