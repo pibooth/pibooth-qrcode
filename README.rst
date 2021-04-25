@@ -28,16 +28,16 @@ Here below the new configuration options available in the `pibooth`_ configurati
     [QRCODE]
 
     # Prefix URL for the QR code
-    qrcode_prefix = "https://github.com/pibooth/pibooth"
+    prefix_url = "https://github.com/pibooth/pibooth"
 
     # Use only one URL for all photos (one QR code linking to the album)
     unique_url = True
 
     # QR code foreground color
-    code_foreground = (255, 255, 255)
+    foreground = (255, 255, 255)
 
     # QR code background color
-    code_background = (0, 0, 0)
+    background = (0, 0, 0)
 
 .. note:: Edit the configuration by running the command ``pibooth --config``.
 
