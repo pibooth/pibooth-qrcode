@@ -9,7 +9,7 @@ from setuptools import setup
 
 HERE = osp.abspath(osp.dirname(__file__))
 sys.path.insert(0, HERE)
-import pibooth_qrcode as plugin
+import pibooth_qrcode as plugin  # nopep8 : import shall be done after adding setup to paths
 
 
 def main():
@@ -26,7 +26,6 @@ def main():
             'Intended Audience :: End Users/Desktop',
             'License :: OSI Approved :: GNU Affero General Public License v3',
             'Operating System :: POSIX :: Linux',
-            'Programming Language :: Python :: 2.7',
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
@@ -46,14 +45,11 @@ def main():
             'pygame'
         ],
         py_modules=['pibooth_qrcode'],
+        python_requires=">=3.6",
         install_requires=[
             'pibooth>=2.0.0',
             'qrcode>=6.1'
         ],
-        options={
-            'bdist_wheel':
-                {'universal': True}
-        },
         zip_safe=False,  # Don't install the lib as an .egg zipfile
         entry_points={'pibooth': ["pibooth_qrcode = pibooth_qrcode"]},
     )

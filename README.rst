@@ -46,7 +46,7 @@ Example
 
 Here is an example of the rendering you can get with this plugin on the wait screen
 
-.. image:: https://raw.githubusercontent.com/pibooth/pibooth-qrcode/master/templates/screenshot.png
+.. image:: https://raw.githubusercontent.com/pibooth/pibooth-qrcode/master/docs/images/screenshot.png
    :align: center
    :alt: Example screenshot
 
@@ -54,9 +54,9 @@ Here is an example of the rendering you can get with this plugin on the wait scr
 
 .. _`pibooth`: https://pypi.org/project/pibooth
 
-.. |PythonVersions| image:: https://img.shields.io/badge/python-2.7+ / 3.6+-red.svg
+.. |PythonVersions| image:: https://img.shields.io/badge/python-3.6+-red.svg
    :target: https://www.python.org/downloads
-   :alt: Python 2.7+/3.6+
+   :alt: Python 3.6+
 
 .. |PypiPackage| image:: https://badge.fury.io/py/pibooth-qrcode.svg
    :target: https://pypi.org/project/pibooth-qrcode
