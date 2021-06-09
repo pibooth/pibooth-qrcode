@@ -28,19 +28,19 @@ def pibooth_configure(cfg):
                    "QR code background color", "Background color", (0, 0, 0))
 
 
-def get_position(win, qrcode_image, position):
+def get_position(win, qrcode_image, location):
     win_rect = win.get_rect()
     win_rect.topleft = (0, 0)
-    pos = list(getattr(win_rect, position))
-    if position.startswith('top'):
+    pos = list(getattr(win_rect, location))
+    if location.startswith('top'):
         pos[1] += POSITION_OFFSET[1]
     else:
         pos[1] -= POSITION_OFFSET[1]
-    if position.endswith('left'):
+    if location.endswith('left'):
         pos[0] += POSITION_OFFSET[0]
     else:
         pos[0] -= POSITION_OFFSET[0]
-    qr_rect = qrcode_image.get_rect(**{position: pos})
+    qr_rect = qrcode_image.get_rect(**{location: pos})
     return qr_rect.topleft
 
 
