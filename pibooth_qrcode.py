@@ -8,7 +8,7 @@ import pygame
 import pibooth
 
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 POSITION_OFFSET = [20, 40]

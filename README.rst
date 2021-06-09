@@ -1,4 +1,3 @@
-NOTE: This plugin is ongoing and may not work yet.
 
 ==============
 pibooth-qrcode
