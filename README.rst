@@ -25,31 +25,42 @@ Here below the new configuration options available in the `pibooth`_ configurati
 .. code-block:: ini
 
     [QRCODE]
-    # Prefix URL for the QR code
+    # URL which may be composed of variables: {picture}, {count}, {text1}, {text2}
     prefix_url = https://github.com/pibooth/pibooth
 
-    # Use only one URL for all photos (one QR code linking to the album)
-    unique_url = True
-
-    # QR code foreground color
+    # Foreground color
     foreground = (255, 255, 255)
 
-    # QR code background color
+    # Background color
     background = (0, 0, 0)
 
-    # QR code offset according to location
+    # Offset (x, y) from location
     offset = (20, 40)
 
-    # QR code location on 'wait' state: topleft, topright, bottomleft, bottomright, midtop-left, midtop-right, midbottom-left, midbottom-right
+    # Location on 'wait' state: topleft, topright, bottomleft, bottomright, midtop-left, midtop-right, midbottom-left, midbottom-right
     wait_location = bottomleft
 
-    # QR code location on 'print' state: topleft, topright, bottomleft, bottomright, midtop-left, midtop-right, midbottom-left, midbottom-right
+    # Location on 'print' state: topleft, topright, bottomleft, bottomright, midtop-left, midtop-right, midbottom-left, midbottom-right
     print_location = bottomright
 
 .. note:: Edit the configuration by running the command ``pibooth --config``.
 
-Locations
----------
+QR code URL
+-----------
+
+The URL linked to the QR code can be define dynamically using some state variables or configuration
+options. Available variables to forge the URL are:
+ - **picture** : current picture filename
+ - **count** : current 'taken' counter value (see counters in configuration menu)
+ - **text1** : text defined in ``[PICTURE][footer_text1]`` option (spaces will be removed)
+ - **text2** : text defined in ``[PICTURE][footer_text2]`` option (spaces will be removed)
+
+For instance, ``https://photos.google.com/share/AxFF4t56kiJiu89m/{picture}`` will generate::
+
+    https://photos.google.com/share/AxFF4t56kiJiu89m/2021-06-11-10-14-08_pibooth.jpg
+
+QR code locations
+-----------------
 
 Here is the possible QR code location at screen:
 

@@ -2,13 +2,12 @@
 
 """Pibooth plugin to display a QR Code on the screen during idle time."""
 
-import os
 import qrcode
 import pygame
 import pibooth
 
 
-__version__ = "0.0.4"
+__version__ = "1.0.0"
 
 
 SECTION = 'QRCODE'
@@ -22,23 +21,20 @@ LOCATIONS = ['topleft', 'topright',
 def pibooth_configure(cfg):
     """Declare the new configuration options"""
     cfg.add_option(SECTION, 'prefix_url', "https://github.com/pibooth/pibooth",
-                   "Prefix URL for the QR code")
-    cfg.add_option(SECTION, 'unique_url', True,
-                   "Use only one URL for all photos (one QR code linking to the album)",
-                   "Use only one URL", ["True", "False"])
+                   "URL which may be composed of variables: {picture}, {count}, {text1}, {text2}")
     cfg.add_option(SECTION, 'foreground', (255, 255, 255),
-                   "QR code foreground color",
+                   "Foreground color",
                    "Color", (255, 255, 255))
     cfg.add_option(SECTION, 'background', (0, 0, 0),
-                   "QR code background color",
+                   "Background color",
                    "Background color", (0, 0, 0))
     cfg.add_option(SECTION, 'offset', (20, 40),
-                   "QR code offset from location")
+                   "Offset (x, y) from location")
     cfg.add_option(SECTION, 'wait_location', "bottomleft",
-                   "QR code location on 'wait' state: {}".format(', '.join(LOCATIONS)),
+                   "Location on 'wait' state: {}".format(', '.join(LOCATIONS)),
                    "Location on wait screen", LOCATIONS)
     cfg.add_option(SECTION, 'print_location', "bottomright",
-                   "QR code location on 'print' state: {}".format(', '.join(LOCATIONS)),
+                   "Location on 'print' state: {}".format(', '.join(LOCATIONS)),
                    "Location on print screen", LOCATIONS)
 
 
@@ -98,12 +94,12 @@ def state_processing_exit(cfg, app):
                        box_size=3,
                        border=1)
 
-    if cfg.getboolean("QRCODE", 'unique_url'):
-        name = ''
-    else:
-        name = os.path.basename(app.previous_picture_file)
+    variables = {'picture': app.picture_filename,
+                 'count': app.count.taken,
+                 'text1': cfg.get('PICTURE', 'footer_text1'),
+                 'text2': cfg.get('PICTURE', 'footer_text2')}
 
-    qr.add_data(os.path.join(cfg.get(SECTION, 'prefix_url'), name))
+    qr.add_data(cfg.get(SECTION, 'prefix_url').format(**variables))
     qr.make(fit=True)
     qrcode_fill_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'foreground')
     qrcode_background_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'background')
