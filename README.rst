@@ -25,7 +25,7 @@ Here below the new configuration options available in the `pibooth`_ configurati
 .. code-block:: ini
 
     [QRCODE]
-    # URL which may be composed of variables: {picture}, {count}, {text1}, {text2}
+    # URL which may be composed of variables: {picture}, {count}, {count}
     prefix_url = https://github.com/pibooth/pibooth
 
     # Foreground color
@@ -50,10 +50,9 @@ QR code URL
 
 The URL linked to the QR code can be define dynamically using some state variables or configuration
 options. Available variables to forge the URL are:
+
  - **picture** : current picture filename
- - **count** : current 'taken' counter value (see counters in configuration menu)
- - **text1** : text defined in ``[PICTURE][footer_text1]`` option (spaces will be removed)
- - **text2** : text defined in ``[PICTURE][footer_text2]`` option (spaces will be removed)
+ - **count** : current counters. You can access to values using ``{count.xxx}`` (see counters in configuration menu)
 
 For instance, ``https://photos.google.com/share/AxFF4t56kiJiu89m/{picture}`` will generate::
 

@@ -5,7 +5,7 @@
 import qrcode
 import pygame
 import pibooth
-
+from pibooth.view.background import multiline_text_to_surfaces
 
 __version__ = "1.0.0"
 
@@ -21,13 +21,16 @@ LOCATIONS = ['topleft', 'topright',
 def pibooth_configure(cfg):
     """Declare the new configuration options"""
     cfg.add_option(SECTION, 'prefix_url', "https://github.com/pibooth/pibooth",
-                   "URL which may be composed of variables: {picture}, {count}, {text1}, {text2}")
+                   "URL which may be composed of variables: {picture}, {count}")
     cfg.add_option(SECTION, 'foreground', (255, 255, 255),
                    "Foreground color",
                    "Color", (255, 255, 255))
     cfg.add_option(SECTION, 'background', (0, 0, 0),
                    "Background color",
                    "Background color", (0, 0, 0))
+    cfg.add_option(SECTION, 'side_text', "",
+                   "Optional text displayed close to the QR code",
+                   "Side text", "")
     cfg.add_option(SECTION, 'offset', (20, 40),
                    "Offset (x, y) from location")
     cfg.add_option(SECTION, 'wait_location', "bottomleft",
@@ -38,10 +41,8 @@ def pibooth_configure(cfg):
                    "Location on print screen", LOCATIONS)
 
 
-def get_position(win, qrcode_image, location, offset):
-    win_rect = win.get_rect()
-    win_rect.topleft = (0, 0)
-    location, sublocation = location, ''
+def get_qrcode_rect(win_rect, qrcode_image, location, offset):
+    sublocation = ''
     if '-' in location:
         location, sublocation = location.split('-')
     pos = list(getattr(win_rect, location))
@@ -59,7 +60,25 @@ def get_position(win, qrcode_image, location, offset):
         else:
             pos[0] += (qrcode_image.get_size()[0] // 2 + 2 * offset[0])
     qr_rect = qrcode_image.get_rect(**{location: pos})
-    return qr_rect.topleft
+    return qr_rect
+
+
+def get_text_rect(win_rect, qrcode_rect, location, margin=5):
+    text_rect = pygame.Rect(0, 0, win_rect.width // 6, qrcode_rect.height)
+    sublocation = ''
+    if '-' in location:
+        location, sublocation = location.split('-')
+    text_rect.top = qrcode_rect.top
+    if 'left' in location:
+        text_rect.left = qrcode_rect.right + margin
+    else:
+        text_rect.right = qrcode_rect.left - margin
+    if 'mid' in location:
+        if 'left' in sublocation:
+            text_rect.right = qrcode_rect.left - margin
+        else:
+            text_rect.left = qrcode_rect.right + margin
+    return text_rect
 
 
 @pibooth.hookimpl
@@ -78,10 +97,19 @@ def state_wait_do(cfg, app, win):
     """
     Display the QR Code on the wait view.
     """
+    win_rect = win.get_rect()
+    location = cfg.get(SECTION, 'wait_location')
     if hasattr(app, 'previous_qr'):
         offset = cfg.gettuple(SECTION, 'offset', int, 2)
-        location = cfg.get(SECTION, 'wait_location')
-        win.surface.blit(app.previous_qr, get_position(win, app.previous_qr, location, offset))
+        qrcode_rect = get_qrcode_rect(win_rect, app.previous_qr, location, offset)
+        win.surface.blit(app.previous_qr, qrcode_rect.topleft)
+        if cfg.get(SECTION, 'side_text'):
+            text_rect = get_text_rect(win_rect, qrcode_rect, location)
+            texts = multiline_text_to_surfaces(cfg.get(SECTION, 'side_text'),
+                                               cfg.gettyped('WINDOW', 'text_color'),
+                                               text_rect, 'bottom-left')
+            for text, rect in texts:
+                win.surface.blit(text, rect)
 
 
 @pibooth.hookimpl
@@ -94,12 +122,10 @@ def state_processing_exit(cfg, app):
                        box_size=3,
                        border=1)
 
-    variables = {'picture': app.picture_filename,
-                 'count': app.count.taken,
-                 'text1': cfg.get('PICTURE', 'footer_text1'),
-                 'text2': cfg.get('PICTURE', 'footer_text2')}
+    url_vars = {'picture': app.picture_filename,
+                'count': app.count}
 
-    qr.add_data(cfg.get(SECTION, 'prefix_url').format(**variables))
+    qr.add_data(cfg.get(SECTION, 'prefix_url').format(**url_vars))
     qr.make(fit=True)
     qrcode_fill_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'foreground')
     qrcode_background_color = '#%02x%02x%02x' % cfg.gettyped("QRCODE", 'background')
@@ -113,6 +139,16 @@ def state_print_enter(cfg, app, win):
     """
     Display the QR Code on the print view.
     """
+    win_rect = win.get_rect()
     offset = cfg.gettuple(SECTION, 'offset', int, 2)
     location = cfg.get(SECTION, 'print_location')
-    win.surface.blit(app.previous_qr, get_position(win, app.previous_qr, location, offset))
+    qrcode_rect = get_qrcode_rect(win_rect, app.previous_qr, location, offset)
+    if cfg.get(SECTION, 'side_text'):
+        text_rect = get_text_rect(win_rect, qrcode_rect, location)
+        texts = multiline_text_to_surfaces(cfg.get(SECTION, 'side_text'),
+                                           cfg.gettyped('WINDOW', 'text_color'),
+                                           text_rect, 'bottom-left')
+        for text, rect in texts:
+            win.surface.blit(text, rect)
+
+    win.surface.blit(app.previous_qr, qrcode_rect.topleft)
