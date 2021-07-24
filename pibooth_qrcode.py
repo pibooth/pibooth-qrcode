@@ -63,7 +63,7 @@ def get_qrcode_rect(win_rect, qrcode_image, location, offset):
     return qr_rect
 
 
-def get_text_rect(win_rect, qrcode_rect, location, margin=5):
+def get_text_rect(win_rect, qrcode_rect, location, margin=10):
     text_rect = pygame.Rect(0, 0, win_rect.width // 6, qrcode_rect.height)
     sublocation = ''
     if '-' in location:
@@ -93,7 +93,7 @@ def pibooth_startup(cfg):
 
 
 @pibooth.hookimpl
-def state_wait_do(cfg, app, win):
+def state_wait_enter(cfg, app, win):
     """
     Display the QR Code on the wait view.
     """
@@ -101,14 +101,27 @@ def state_wait_do(cfg, app, win):
     location = cfg.get(SECTION, 'wait_location')
     if hasattr(app, 'previous_qr'):
         offset = cfg.gettuple(SECTION, 'offset', int, 2)
-        qrcode_rect = get_qrcode_rect(win_rect, app.previous_qr, location, offset)
-        win.surface.blit(app.previous_qr, qrcode_rect.topleft)
+        app.qr_rect = get_qrcode_rect(win_rect, app.previous_qr, location, offset)
+        win.surface.blit(app.previous_qr, app.qr_rect.topleft)
         if cfg.get(SECTION, 'side_text'):
-            text_rect = get_text_rect(win_rect, qrcode_rect, location)
-            texts = multiline_text_to_surfaces(cfg.get(SECTION, 'side_text'),
-                                               cfg.gettyped('WINDOW', 'text_color'),
-                                               text_rect, 'bottom-left')
-            for text, rect in texts:
+            text_rect = get_text_rect(win_rect, app.qr_rect, location)
+            app.qr_texts = multiline_text_to_surfaces(cfg.get(SECTION, 'side_text'),
+                                                      cfg.gettyped('WINDOW', 'text_color'),
+                                                      text_rect, 'bottom-left')
+            for text, rect in app.qr_texts:
+                win.surface.blit(text, rect)
+
+
+@pibooth.hookimpl
+def state_wait_do(app, win):
+    """
+    Redraw the QR Code because it may have been erased by a screen update (
+    for instance, if a print is done).
+    """
+    if hasattr(app, 'previous_qr'):
+        win.surface.blit(app.previous_qr, app.qr_rect.topleft)
+        if hasattr(app, 'qr_texts'):
+            for text, rect in app.qr_texts:
                 win.surface.blit(text, rect)
 
 

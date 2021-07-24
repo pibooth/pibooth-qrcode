@@ -34,6 +34,9 @@ Here below the new configuration options available in the `pibooth`_ configurati
     # Background color
     background = (0, 0, 0)
 
+    # Optional text displayed close to the QR code
+    side_text = 
+
     # Offset (x, y) from location
     offset = (20, 40)
 
