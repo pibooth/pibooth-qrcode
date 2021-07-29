@@ -30,6 +30,10 @@ jobs:
         sudo apt-get install libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsmpeg-dev libportmidi-dev libsdl1.2-dev
         pip install pibooth
 
+    - name: Install plugin dependencies
+      run: |
+        pip install qrcode
+
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
