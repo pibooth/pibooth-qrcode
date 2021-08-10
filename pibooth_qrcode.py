@@ -2,7 +2,10 @@
 
 """Pibooth plugin to display a QR Code on the screen during idle time."""
 
-import qrcode
+try:
+    import qrcode
+except ImportError:
+    pass  # When running the setup.py, qrcode is not yet installed
 import pygame
 import pibooth
 from pibooth.view.background import multiline_text_to_surfaces
