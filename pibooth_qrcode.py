@@ -5,6 +5,7 @@
 try:
     import qrcode
 except ImportError:
+    qrcode = None
     pass  # When running the setup.py, qrcode is not yet installed
 import pygame
 import pibooth
@@ -133,6 +134,8 @@ def state_processing_exit(cfg, app):
     """
     Generate the QR Code and store it in the application.
     """
+    if qrcode is None:
+        raise ModuleNotFoundError("No module named 'qrcode'")
     qr = qrcode.QRCode(version=1,
                        error_correction=qrcode.constants.ERROR_CORRECT_L,
                        box_size=3,
