@@ -99,7 +99,7 @@ def state_wait_enter(cfg, app, win):
     """
     win_rect = win.get_rect()
     location = cfg.get(SECTION, 'wait_location')
-    if hasattr(app, 'previous_qr'):
+    if hasattr(app, 'previous_qr') and app.previous_picture:
         offset = cfg.gettuple(SECTION, 'offset', int, 2)
         app.qr_rect = get_qrcode_rect(win_rect, app.previous_qr, location, offset)
         win.surface.blit(app.previous_qr, app.qr_rect.topleft)
@@ -118,7 +118,8 @@ def state_wait_do(app, win):
     Redraw the QR Code because it may have been erased by a screen update (
     for instance, if a print is done).
     """
-    if hasattr(app, 'previous_qr'):
+    if hasattr(app, 'previous_qr') and app.previous_picture:
+        # Not displayed if no previous capture is deleted
         win.surface.blit(app.previous_qr, app.qr_rect.topleft)
         if hasattr(app, 'qr_texts'):
             for text, rect in app.qr_texts:
