@@ -11,7 +11,7 @@ import pygame
 import pibooth
 from pibooth.view.background import multiline_text_to_surfaces
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 SECTION = 'QRCODE'
