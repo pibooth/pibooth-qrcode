@@ -35,7 +35,7 @@ Here below the new configuration options available in the `pibooth`_ configurati
     background = (0, 0, 0)
 
     # Optional text displayed close to the QR code
-    side_text = 
+    side_text =
 
     # Offset (x, y) from location
     offset = (20, 40)
@@ -55,7 +55,10 @@ The URL linked to the QR code can be define dynamically using some state variabl
 options. Available variables to forge the URL are:
 
 - **picture** : current picture filename
-- **count** : current counters. You can access to values using ``{count.xxx}`` (see counters in configuration menu)
+- **count** : current counters. You can access to values using ``{count.xxx}`` (see counters
+              in configuration menu)
+- **url** : URL defined in the ``app.previous_picture_url`` attribute. This attribute can be
+            defined by another plugin.
 
 For instance, ``https://photos.google.com/share/AxFF4t56kiJiu89m/{picture}`` will generate::
 

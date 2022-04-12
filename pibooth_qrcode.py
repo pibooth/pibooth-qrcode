@@ -11,7 +11,7 @@ import pygame
 import pibooth
 from pibooth.view.background import multiline_text_to_surfaces
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 
 SECTION = 'QRCODE'
@@ -130,7 +130,7 @@ def state_wait_do(app, win):
                 win.surface.blit(text, rect)
 
 
-@pibooth.hookimpl
+@pibooth.hookimpl(trylast=True)
 def state_processing_exit(cfg, app):
     """
     Generate the QR Code and store it in the application.
@@ -143,7 +143,8 @@ def state_processing_exit(cfg, app):
                        border=1)
 
     url_vars = {'picture': app.picture_filename,
-                'count': app.count}
+                'count': app.count,
+                'url': getattr(app, 'previous_picture_url', None) or ''}
 
     qr.add_data(cfg.get(SECTION, 'prefix_url').format(**url_vars))
     qr.make(fit=True)
