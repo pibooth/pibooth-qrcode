@@ -57,8 +57,8 @@ options. Available variables to forge the URL are:
 - **picture** : current picture filename
 - **count** : current counters. You can access to values using ``{count.xxx}`` (see counters
   in configuration menu)
-- **url** : URL defined in the ``app.previous_picture_url`` attribute. This attribute can be
-  defined by another plugin.
+- **url** : current picture URL as defined in ``app.previous_picture_url`` attribute (this attribute is
+  generally defined by another plugin).
 
 For instance, ``https://photos.google.com/share/AxFF4t56kiJiu89m/{picture}`` will generate::
 
