@@ -24,8 +24,8 @@ LOCATIONS = ['topleft', 'topright',
 @pibooth.hookimpl
 def pibooth_configure(cfg):
     """Declare the new configuration options"""
-    cfg.add_option(SECTION, 'prefix_url', "https://github.com/pibooth/pibooth",
-                   "URL which may be composed of variables: {picture}, {count}")
+    cfg.add_option(SECTION, 'prefix_url', "{url}",
+                   "URL which may be composed of variables: {picture}, {count}, {url}")
     cfg.add_option(SECTION, 'foreground', (255, 255, 255),
                    "Foreground color",
                    "Color", (255, 255, 255))
