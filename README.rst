@@ -46,6 +46,9 @@ Here below the new configuration options available in the `pibooth`_ configurati
     # Location on 'print' state: topleft, topright, bottomleft, bottomright, midtop-left, midtop-right, midbottom-left, midbottom-right
     print_location = bottomright
 
+    # Size of the QR-Code in nummeric steps (Default = 4)
+    size = 4
+
 .. note:: Edit the configuration by running the command ``pibooth --config``.
 
 QR code URL
